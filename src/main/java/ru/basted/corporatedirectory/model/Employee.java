@@ -1,23 +1,32 @@
 package ru.basted.corporatedirectory.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "employees")
 public class Employee {
     @Id
     @GeneratedValue
     private Long id;
-    @NotBlank(message = "Имя сотрудника не должно быть пустым")
+
+    @NotBlank(message = "Укажите полное имя сотрудника")
     private String fullName;
-    @Column(unique = true)
-    @Email(message = "Некорректный формат адреса электронной почты")
+
+    @NotBlank(message = "Электронная почта обязательна для заполнения")
+    @Email(message = "Введен неверный формат email (например, ivan@company.com)")
     private String email;
+
+    @NotBlank(message = "Необходимо указать департамент или отдел")
     private String department;
+
+    @NotBlank(message = "Укажите должность сотрудника")
     private String position;
 }
+

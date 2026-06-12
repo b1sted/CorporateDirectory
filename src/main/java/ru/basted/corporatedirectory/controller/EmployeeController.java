@@ -1,5 +1,6 @@
 package ru.basted.corporatedirectory.controller;
 
+import org.springframework.validation.annotation.Validated;
 import ru.basted.corporatedirectory.model.Employee;
 import ru.basted.corporatedirectory.service.EmployeeService;
 
@@ -49,7 +50,9 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeEmployee(@Valid @PathVariable Long id) {
+    public ResponseEntity<Void> removeEmployee(
+            @PathVariable @Positive(message = "ID не должен быть меньше нуля") Long id
+    ) {
         service.removeEmployee(id);
         return ResponseEntity.noContent().build();
     }
