@@ -1,10 +1,12 @@
 package ru.basted.corporatedirectory.controller;
 
-import jakarta.validation.Valid;
 import ru.basted.corporatedirectory.model.Employee;
 import ru.basted.corporatedirectory.service.EmployeeService;
 
 import lombok.AllArgsConstructor;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<Employee> getEmployeeById(
+            @PathVariable @Positive(message = "ID не должен быть меньше нуля") Long id
+    ) {
         return ResponseEntity.ok(service.getEmployeeById(id));
     }
 
@@ -33,5 +37,20 @@ public class EmployeeController {
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
         Employee saved = service.createEmployee(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> changeEmployee(
+            @PathVariable @Positive(message = "ID не должен быть меньше нуля") Long id,
+            @RequestBody @Valid Employee employee
+    ) {
+        Employee changed = service.changeEmployee(id, employee);
+        return ResponseEntity.status(HttpStatus.OK).body(changed);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeEmployee(@Valid @PathVariable Long id) {
+        service.removeEmployee(id);
+        return ResponseEntity.noContent().build();
     }
 }

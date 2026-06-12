@@ -1,9 +1,10 @@
 package ru.basted.corporatedirectory.model;
 
+import lombok.Data;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
 @Data
 @Entity

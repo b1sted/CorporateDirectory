@@ -1,11 +1,11 @@
 package ru.basted.corporatedirectory.service.impl;
 
-import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import ru.basted.corporatedirectory.exception.ResourceNotFoundException;
 import ru.basted.corporatedirectory.model.Employee;
 import ru.basted.corporatedirectory.repository.EmployeeRepository;
 import ru.basted.corporatedirectory.service.EmployeeService;
+
+import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Primary
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
 
