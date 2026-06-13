@@ -1,7 +1,7 @@
 package ru.basted.corporatedirectory.controller;
 
-import org.springframework.validation.annotation.Validated;
-import ru.basted.corporatedirectory.model.Employee;
+import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
 import ru.basted.corporatedirectory.service.EmployeeService;
 
 import lombok.AllArgsConstructor;
@@ -23,29 +23,29 @@ public class EmployeeController {
     private final EmployeeService service;
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees() {
         return ResponseEntity.ok(service.getAllEmployees());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(
+    public ResponseEntity<EmployeeResponseDto> getEmployeeById(
             @PathVariable @Positive(message = "ID не должен быть меньше нуля") Long id
     ) {
         return ResponseEntity.ok(service.getEmployeeById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
-        Employee saved = service.createEmployee(employee);
+    public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeCreateDto createDto) {
+        EmployeeResponseDto saved = service.createEmployee(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> changeEmployee(
+    public ResponseEntity<EmployeeResponseDto> changeEmployee(
             @PathVariable @Positive(message = "ID не должен быть меньше нуля") Long id,
-            @RequestBody @Valid Employee employee
+            @RequestBody @Valid EmployeeCreateDto createDto
     ) {
-        Employee changed = service.changeEmployee(id, employee);
+        EmployeeResponseDto changed = service.changeEmployee(id, createDto);
         return ResponseEntity.status(HttpStatus.OK).body(changed);
     }
 

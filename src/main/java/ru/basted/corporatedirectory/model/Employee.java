@@ -16,17 +16,9 @@ public class Employee {
     @GeneratedValue
     private Long id;
 
-    @NotBlank(message = "Укажите полное имя сотрудника")
     private String fullName;
-
-    @NotBlank(message = "Электронная почта обязательна для заполнения")
-    @Email(message = "Введен неверный формат email (например, ivan@company.com)")
     private String email;
-
-    @NotBlank(message = "Необходимо указать департамент или отдел")
     private String department;
-
-    @NotBlank(message = "Укажите должность сотрудника")
     private String position;
 }
 

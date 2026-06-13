@@ -1,63 +1,73 @@
 package ru.basted.corporatedirectory.service.impl;
 
+import jakarta.transaction.Transactional;
+import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
 import ru.basted.corporatedirectory.exception.ResourceNotFoundException;
+import ru.basted.corporatedirectory.mapper.EmployeeMapper;
 import ru.basted.corporatedirectory.model.Employee;
 import ru.basted.corporatedirectory.repository.EmployeeRepository;
 import ru.basted.corporatedirectory.service.EmployeeService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
+    private final EmployeeMapper mapper;
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return repository.findAll();
+    public List<EmployeeResponseDto> getAllEmployees() {
+        return repository.findAllByOrderByIdAsc()
+                .stream()
+                .map(mapper::toResponseDto)
+                .toList();
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        return repository.findById(id)
+    public EmployeeResponseDto getEmployeeById(Long id) {
+        Employee employee = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Сотрудник c id " + id + " не найден"));
+
+        return mapper.toResponseDto(employee);
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
-        if (repository.existsByEmail(employee.getEmail())) {
+    public EmployeeResponseDto createEmployee(EmployeeCreateDto createDto) {
+        if (repository.existsByEmail(createDto.getEmail())) {
             throw new EmailAlreadyExistsException(
-                    "Пользователь с email " + employee.getEmail() + " уже существует"
+                    "Пользователь с email " + createDto.getEmail() + " уже существует"
             );
         }
 
-        return repository.save(employee);
+        Employee employee = mapper.toEntity(createDto);
+        Employee savedEmployee = repository.save(employee);
+        return mapper.toResponseDto(savedEmployee);
     }
 
     @Override
-    public Employee changeEmployee(Long id, Employee employee) {
+    @Transactional
+    public EmployeeResponseDto changeEmployee(Long id, EmployeeCreateDto createDto) {
         Employee existingEmployee = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Сотрудник c id " + id + " не найден"));
 
-        String newEmail = employee.getEmail();
-
+        String newEmail = createDto.getEmail();
         if (!existingEmployee.getEmail().equals(newEmail) && repository.existsByEmail(newEmail)) {
             throw new EmailAlreadyExistsException(
-                    "Пользователь с email " + employee.getEmail() + " уже существует"
+                    "Пользователь с email " + createDto.getEmail() + " уже существует"
             );
         }
 
-        existingEmployee.setFullName(employee.getFullName());
-        existingEmployee.setEmail(employee.getEmail());
-        existingEmployee.setDepartment(employee.getDepartment());
-        existingEmployee.setPosition(employee.getPosition());
+        mapper.updateEntityFromDto(createDto, existingEmployee);
 
-        return repository.save(existingEmployee);
+        Employee savedEmployee = repository.save(existingEmployee);
+        return mapper.toResponseDto(savedEmployee);
     }
 
     @Override
