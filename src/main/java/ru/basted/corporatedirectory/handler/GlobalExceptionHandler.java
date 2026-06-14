@@ -1,7 +1,8 @@
 package ru.basted.corporatedirectory.handler;
 
+import ru.basted.corporatedirectory.dto.ErrorResponseDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
-import ru.basted.corporatedirectory.exception.ResourceNotFoundException;
+import ru.basted.corporatedirectory.exception.UserNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -28,64 +29,64 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return buildBadRequestResponse(errors);
+        return buildBadRequestResponse("Ошибка валидации данных", errors);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<Map<String, Object>> handleMethodValidation(HandlerMethodValidationException ex) {
+    public ResponseEntity<ErrorResponseDto> handleMethodValidation(HandlerMethodValidationException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getParameterValidationResults().forEach(paramResult -> {
             String paramName = paramResult.getMethodParameter().getParameterName();
 
-            paramResult.getResolvableErrors().forEach(error -> {
-                errors.put(paramName, error.getDefaultMessage());
-            });
+            paramResult.getResolvableErrors().forEach(error ->
+                    errors.put(paramName, error.getDefaultMessage()));
         });
 
-        return buildBadRequestResponse(errors);
+        return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex) {
         return buildNotFoundResponse(ex.getMessage());
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
         return buildConflictResponse(ex.getMessage());
     }
 
-    private ResponseEntity<Map<String, Object>> buildBadRequestResponse(Map<String, String> errors) {
-        Map<String, Object> response = new HashMap<>();
+    private ResponseEntity<ErrorResponseDto> buildBadRequestResponse(String message, Map<String, String> errors) {
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .timestamp(LocalDateTime.now().withNano(0))
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(message)
+                .fieldErrors(errors)
+                .build();
 
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Validation Failed");
-        response.put("errors", errors);
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    private ResponseEntity<Map<String, Object>> buildNotFoundResponse(String message) {
-        Map<String, Object> response = new HashMap<>();
+    private ResponseEntity<ErrorResponseDto> buildNotFoundResponse(String message) {
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .timestamp(LocalDateTime.now().withNano(0))
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(message)
+                .build();
 
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Not Found");
-        response.put("message", message);
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    private ResponseEntity<Map<String, Object>> buildConflictResponse(String message) {
-        Map<String, Object> response = new HashMap<>();
+    private ResponseEntity<ErrorResponseDto> buildConflictResponse(String message) {
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .timestamp(LocalDateTime.now().withNano(0))
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(message)
+                .build();
 
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.CONFLICT.value());
-        response.put("error", "Conflict");
-        response.put("message", message);
-
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 }
