@@ -1,24 +1,11 @@
 package ru.basted.corporatedirectory.util;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
 import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContractFixtures {
-    public static EmployeeCreateDto createEmployee(String fullName, String email,
-                                                   String department, String position) {
-        EmployeeCreateDto dto = new EmployeeCreateDto();
-
-        dto.setFullName(fullName);
-        dto.setEmail(email);
-        dto.setDepartment(department);
-        dto.setPosition(position);
-
-        return dto;
-    }
-
     public static EmployeeResponseDto validEmployee(Long id, String fullName, String email,
                                                     String department, String position) {
         EmployeeResponseDto responseDto = new EmployeeResponseDto();

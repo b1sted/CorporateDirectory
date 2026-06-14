@@ -3,8 +3,8 @@ package contracts.employees.error
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description("При попытке найти сотрудника по несуществующему " +
-            "идентификатору должен возвращаться код ошибки 404 Not Found")
+    description("При попытке найти сотрудника по несуществующему идентификатору " +
+            "должен возвращаться код ошибки 404 Not Found")
 
     request {
         method('GET')
