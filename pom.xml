@@ -123,6 +123,12 @@
 							<contractPackageRegex>.*employees\.success.*</contractPackageRegex>
 							<baseClassFQN>ru.basted.corporatedirectory.contract.employees.EmployeeSuccessBase</baseClassFQN>
 						</baseClassMapping>
+
+
+						<baseClassMapping>
+							<contractPackageRegex>.*employees\.error.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.employees.EmployeeErrorBase</baseClassFQN>
+						</baseClassMapping>
 					</baseClassMappings>
 
 					<testFramework>JUNIT5</testFramework>
