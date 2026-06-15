@@ -1,0 +1,32 @@
+name: Contract Testing
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  contract-testing:
+    runs-on: ubuntu-slim
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Run Contract Testing
+        working-directory: ./CorporateDirectory
+        run: mvn verify -B
+
+      - name: Upload Surefire Reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: CorporateDirectory/target/surefire-reports/
