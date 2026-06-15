@@ -20,7 +20,7 @@ jobs:
           java-version: '21'
 
       - name: Run Contract Testing
-        run: mvn verify -B
+        run: mvn verify -B -Dmaven.resolver.transport=wagon
 
       - name: Upload Surefire Reports
         if: failure()
