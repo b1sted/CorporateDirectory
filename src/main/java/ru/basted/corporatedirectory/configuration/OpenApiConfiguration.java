@@ -1,5 +1,8 @@
 package ru.basted.corporatedirectory.configuration;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +24,12 @@ public class OpenApiConfiguration {
                 .description("Этот API предоставляет конечные точки для управления сотрудниками.")
                 .contact(myContact);
 
-        return new OpenAPI().info(information);
+        return new OpenAPI()
+                .addSecurityItem(new SecurityRequirement().addList("basicScheme"))
+                .components(new Components()
+                        .addSecuritySchemes("basicScheme", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("basic")))
+                .info(information);
     }
 }
