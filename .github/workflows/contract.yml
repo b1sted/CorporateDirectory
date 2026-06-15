@@ -21,7 +21,6 @@ jobs:
           cache: 'maven'
 
       - name: Run Contract Testing
-        working-directory: ./CorporateDirectory
         run: mvn verify -B
 
       - name: Upload Surefire Reports
@@ -29,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
-          path: CorporateDirectory/target/surefire-reports/
+          path: target/surefire-reports/
