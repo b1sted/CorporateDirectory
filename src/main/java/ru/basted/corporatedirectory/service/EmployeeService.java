@@ -1,7 +1,7 @@
 package ru.basted.corporatedirectory.service;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package ru.basted.corporatedirectory.contract.employees;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 import ru.basted.corporatedirectory.util.ContractFixtures;
 
 import org.junit.jupiter.api.BeforeEach;

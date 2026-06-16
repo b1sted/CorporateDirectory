@@ -1,6 +1,6 @@
 package ru.basted.corporatedirectory.contract.employees;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
 import ru.basted.corporatedirectory.exception.UserNotFoundException;
 

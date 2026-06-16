@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.web.bind.annotation.*;
 import ru.basted.corporatedirectory.annotation.*;
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 
 import org.springframework.http.ResponseEntity;
 
