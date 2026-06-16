@@ -1,0 +1,28 @@
+package ru.basted.corporatedirectory.dto.account;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import ru.basted.corporatedirectory.model.Role;
+
+@Getter
+@Setter
+@Schema(description = "Модель данных для добавления нового пользователя в базу данных")
+public class AccountCreateDto {
+    @NotBlank(message = "Имя пользователя не должно быть пустым")
+    @Size(min = 4, max = 24, message = "Имя пользователя должно быть от 4 до 24 символов")
+    @Schema(description = "Имя пользователя", example = "basted")
+    private String username;
+
+    @NotBlank(message = "Пароль не должен быть пустым")
+    @Size(min = 6, message = "Пароль должен быть не менее 6 символов")
+    @Schema(description = "Пароль пользователя", example = "dm89jULndiFNt5zaZL0Ub4tu5IqTDEoH")
+    private String password;
+
+    @NotNull(message = "Роль не должна быть пустой")
+    @Schema(description = "Роль пользователя", example = "user")
+    private Role role;
+}
