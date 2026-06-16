@@ -28,4 +28,7 @@ public class ErrorResponseDto {
 
     @Schema(description = "Список ошибок по полям", example = "{\"email\": \"Введен неверный формат email\", \"department\": \"Необходимо указать департамент\"}")
     private Map<String, String> fieldErrors;
+
+    @Schema(description = "Путь без Endpoint", example = "/api/v1/accounts/5/role")
+    private String path;
 }

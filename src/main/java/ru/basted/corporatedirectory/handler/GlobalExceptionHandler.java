@@ -1,7 +1,11 @@
 package ru.basted.corporatedirectory.handler;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import ru.basted.corporatedirectory.dto.ErrorResponseDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
+import ru.basted.corporatedirectory.exception.IdenticalRoleException;
 import ru.basted.corporatedirectory.exception.UserNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -12,7 +16,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import org.springframework.validation.FieldError;
+import ru.basted.corporatedirectory.exception.UsernameAlreadyExistsException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +62,37 @@ public class GlobalExceptionHandler {
         return buildConflictResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        return buildConflictResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(IdenticalRoleException.class)
+    public ResponseEntity<ErrorResponseDto> handleIdenticalRole(IdenticalRoleException ex) {
+        return buildBadRequestResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponseDto> handleAccessDenied(HttpServletRequest request) {
+        return buildNotFoundResponse(request);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleNoResourceFound(HttpServletRequest request) {
+        return buildNotFoundResponse(request);
+    }
+
+    private ResponseEntity<ErrorResponseDto> buildBadRequestResponse(String message) {
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .timestamp(LocalDateTime.now().withNano(0))
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(message)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     private ResponseEntity<ErrorResponseDto> buildBadRequestResponse(String message, Map<String, String> errors) {
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .timestamp(LocalDateTime.now().withNano(0))
@@ -74,6 +111,17 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND.value())
                 .error(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .message(message)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    private ResponseEntity<ErrorResponseDto> buildNotFoundResponse(HttpServletRequest request) {
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .timestamp(LocalDateTime.now().withNano(0))
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .path(request.getRequestURI())
                 .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
