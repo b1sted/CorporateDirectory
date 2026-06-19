@@ -1,27 +1,29 @@
 package ru.basted.corporatedirectory.handler;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
-import ru.basted.corporatedirectory.dto.ErrorResponseDto;
-import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
-import ru.basted.corporatedirectory.exception.IdenticalRoleException;
-import ru.basted.corporatedirectory.exception.UserNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import org.springframework.validation.FieldError;
+import ru.basted.corporatedirectory.dto.ErrorResponseDto;
+import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
+import ru.basted.corporatedirectory.exception.IdenticalRoleException;
+import ru.basted.corporatedirectory.exception.UserNotFoundException;
 import ru.basted.corporatedirectory.exception.UsernameAlreadyExistsException;
-
-import java.nio.file.AccessDeniedException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -67,6 +69,16 @@ public class GlobalExceptionHandler {
         return buildConflictResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDto> handleJsonParseError(HttpMessageNotReadableException ex) {
+        String message = ex.getMessage();
+        if (message != null && message.contains("ru.basted.corporatedirectory.model.Role")) {
+            message = "Передана неизвестная роль пользователя: " + message.substring(message.lastIndexOf('.') + 1);
+        }
+
+        return buildBadRequestResponse(message);
+    }
+
     @ExceptionHandler(IdenticalRoleException.class)
     public ResponseEntity<ErrorResponseDto> handleIdenticalRole(IdenticalRoleException ex) {
         return buildBadRequestResponse(ex.getMessage());
@@ -74,6 +86,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponseDto> handleAccessDenied(HttpServletRequest request) {
+        return buildNotFoundResponse(request);
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, InsufficientAuthenticationException.class})
+    public ResponseEntity<ErrorResponseDto> handleAuthenticationException(HttpServletRequest request) {
         return buildNotFoundResponse(request);
     }
 
