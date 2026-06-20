@@ -59,6 +59,7 @@ public interface AccountApi {
     )
     @AccountApiDocs.Register
     @ApiErrors.NotFoundOrHidden
+    @AccountApiDocs.InvalidArgumentsUponRegistration
     @AccountApiDocs.UsernameAlreadyExists
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -70,6 +71,7 @@ public interface AccountApi {
                     "Доступна только администраторам и самому пользователю."
     )
     @AccountApiDocs.ChangePassword
+    @AccountApiDocs.InvalidPassword
     @ApiErrors.ResourceNotFound
     @PatchMapping("/{id}/password")
     @PreAuthorize("@securityCheck.isOwnerOrAdmin(#id)")

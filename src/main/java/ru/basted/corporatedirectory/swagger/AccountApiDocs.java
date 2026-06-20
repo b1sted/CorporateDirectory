@@ -158,6 +158,87 @@ public interface AccountApiDocs {
     @Target({ElementType.METHOD, ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @ApiResponse(
+            responseCode = "400",
+            description = "Ошибка валидации данных. Переданы некорректные аргументы в теле запроса",
+            headers = {
+                    @Header(name = "Cache-Control", description = "Запрет кэша",
+                            schema = @Schema(type = "string", example = "no-cache, no-store, max-age=0, must-revalidate")),
+                    @Header(name = "Pragma", description = "Запрет кэша HTTP/1.0",
+                            schema = @Schema(type = "string", example = "no-cache")),
+                    @Header(name = "X-Frame-Options", description = "Защита от кликджекинга",
+                            schema = @Schema(type = "string", example = "DENY"))
+            },
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponseDto.class),
+                    examples = {
+                            @ExampleObject(
+                                    name = "Некорректный пароль или имя пользователя",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Ошибка валидации данных",
+                                              "fieldErrors": {
+                                                "password": "Пароль не должен быть пустым",
+                                                "username": "Имя пользователя должно быть от 4 до 64 символов"
+                                              }
+                                            }
+                                            """
+                            ),
+                            @ExampleObject(
+                                    name = "Некорректная роль пользователя",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Передана неизвестная роль пользователя: ROLE_"
+                                            }
+                                            """
+                            )
+                    }
+            )
+    )
+    @interface InvalidArgumentsUponRegistration {}
+
+    @Target({ElementType.METHOD, ElementType.TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @ApiResponse(
+            responseCode = "400",
+            description = "Ошибка валидации поля password",
+            headers = {
+                    @Header(name = "Cache-Control", description = "Запрет кэша",
+                            schema = @Schema(type = "string", example = "no-cache, no-store, max-age=0, must-revalidate")),
+                    @Header(name = "Pragma", description = "Запрет кэша HTTP/1.0",
+                            schema = @Schema(type = "string", example = "no-cache")),
+                    @Header(name = "X-Frame-Options", description = "Защита от кликджекинга",
+                            schema = @Schema(type = "string", example = "DENY"))
+            },
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponseDto.class),
+                    examples = @ExampleObject(value = """
+                            {
+                              "timestamp": "2026-06-20T01:40:14",
+                              "status": 400,
+                              "error": "Bad Request",
+                              "message": "Ошибка валидации параметров запроса",
+                              "fieldErrors": {
+                                "request": "Пароль должен быть от 8 до 128 символов"
+                              }
+                            }
+                            """)
+            )
+    )
+    @interface InvalidPassword {}
+
+    @Target({ElementType.METHOD, ElementType.TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @ApiResponse(
             responseCode = "409",
             description = "Логин учётной записи уже используется",
             headers = {
