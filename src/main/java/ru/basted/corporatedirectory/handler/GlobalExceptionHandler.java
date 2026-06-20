@@ -3,7 +3,6 @@ package ru.basted.corporatedirectory.handler;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -54,21 +53,6 @@ public class GlobalExceptionHandler {
         return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex) {
-        return buildNotFoundResponse(ex.getMessage());
-    }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
-        return buildConflictResponse(ex.getMessage());
-    }
-
-    @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
-        return buildConflictResponse(ex.getMessage());
-    }
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDto> handleJsonParseError(HttpMessageNotReadableException ex) {
         String message = ex.getMessage();
@@ -97,6 +81,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleNoResourceFound(HttpServletRequest request) {
         return buildNotFoundResponse(request);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex) {
+        return buildNotFoundResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+        return buildConflictResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        return buildConflictResponse(ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponseDto> buildBadRequestResponse(String message) {
