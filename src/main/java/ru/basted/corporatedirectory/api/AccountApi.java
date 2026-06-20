@@ -1,20 +1,28 @@
 package ru.basted.corporatedirectory.api;
 
+import java.util.List;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import ru.basted.corporatedirectory.dto.account.AccountCreateDto;
 import ru.basted.corporatedirectory.dto.account.AccountResponseDto;
 import ru.basted.corporatedirectory.dto.account.UpdatePasswordRequest;
 import ru.basted.corporatedirectory.dto.account.UpdateRoleRequest;
-
-import java.util.List;
+import ru.basted.corporatedirectory.swagger.AccountApiDocs;
+import ru.basted.corporatedirectory.swagger.global.ApiErrors;
 
 @Tag(name = "Пользователи", description = "Управление базой данных пользователей")
 public interface AccountApi {
@@ -23,6 +31,8 @@ public interface AccountApi {
             description = "Возвращает список всех зарегистрированных пользователей с информацией о них. " +
                     "Доступна только администраторам."
     )
+    @AccountApiDocs.GetList
+    @ApiErrors.NotFoundOrHidden
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     ResponseEntity<List<AccountResponseDto>> getAllAccounts();
@@ -32,6 +42,8 @@ public interface AccountApi {
             description = "Возвращает информацию о действующем пользователе по его уникальному идентификатору. " +
                     "Доступна только администраторам и самому пользователю."
     )
+    @AccountApiDocs.GetEntity
+    @ApiErrors.ResourceNotFound
     @GetMapping("/{id}")
     @PreAuthorize("@securityCheck.isOwnerOrAdmin(#id)")
     ResponseEntity<AccountResponseDto> getAccountById(
@@ -45,6 +57,9 @@ public interface AccountApi {
             description = "При успешной регистрации, возвращает информацию о зарегистированном пользователе. " +
                     "Доступна только администраторам."
     )
+    @AccountApiDocs.Register
+    @ApiErrors.NotFoundOrHidden
+    @AccountApiDocs.UsernameAlreadyExists
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<AccountResponseDto> registerNewAccount(@Valid @RequestBody AccountCreateDto createDto);
@@ -54,6 +69,8 @@ public interface AccountApi {
             description = "Изменяет пароль действующего пользователя. " +
                     "Доступна только администраторам и самому пользователю."
     )
+    @AccountApiDocs.ChangePassword
+    @ApiErrors.ResourceNotFound
     @PatchMapping("/{id}/password")
     @PreAuthorize("@securityCheck.isOwnerOrAdmin(#id)")
     ResponseEntity<Void> changePassword(
@@ -68,6 +85,9 @@ public interface AccountApi {
             summary = "Смена роли пользователя",
             description = "Изменяет роль действующего пользователя. Доступна только администраторам."
     )
+    @AccountApiDocs.ChangeRole
+    @ApiErrors.ResourceNotFound
+    @AccountApiDocs.IdenticalRole
     @PatchMapping("/{id}/role")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Void> changeRole(
@@ -82,6 +102,8 @@ public interface AccountApi {
             summary = "Удаление пользователя",
             description = "Удаляет действующего пользователя из базы данных. Доступна только администраторам."
     )
+    @AccountApiDocs.Delete
+    @ApiErrors.ResourceNotFound
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Void> deleteAccount(
