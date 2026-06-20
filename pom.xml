@@ -122,6 +122,8 @@
 				<configuration>
 					<basePackageForTests>ru.basted.corporatedirectory.contract</basePackageForTests>
 
+					<baseClassForTests>ru.basted.corporatedirectory.contract.CoreContractBase</baseClassForTests>
+
 					<baseClassMappings>
 						<baseClassMapping>
 							<contractPackageRegex>.*employees\.success.*</contractPackageRegex>
