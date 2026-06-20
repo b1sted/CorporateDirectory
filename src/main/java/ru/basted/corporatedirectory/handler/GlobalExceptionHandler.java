@@ -63,11 +63,6 @@ public class GlobalExceptionHandler {
         return buildBadRequestResponse(message);
     }
 
-    @ExceptionHandler(IdenticalRoleException.class)
-    public ResponseEntity<ErrorResponseDto> handleIdenticalRole(IdenticalRoleException ex) {
-        return buildBadRequestResponse(ex.getMessage());
-    }
-
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponseDto> handleAccessDenied(HttpServletRequest request) {
         return buildNotFoundResponse(request);
@@ -95,6 +90,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        return buildConflictResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(IdenticalRoleException.class)
+    public ResponseEntity<ErrorResponseDto> handleIdenticalRole(IdenticalRoleException ex) {
         return buildConflictResponse(ex.getMessage());
     }
 
