@@ -241,17 +241,40 @@ public interface AccountApiDocs {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponseDto.class),
-                    examples = @ExampleObject(value = """
-                            {
-                              "timestamp": "2026-06-20T01:40:14",
-                              "status": 400,
-                              "error": "Bad Request",
-                              "message": "Ошибка валидации параметров запроса",
-                              "fieldErrors": {
-                                "request": "Пароль должен быть от 8 до 128 символов"
-                              }
-                            }
-                            """)
+                    examples = {
+                            @ExampleObject(
+                                    name = "emptyPassword",
+                                    summary = "На вход передан пустой пароль",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Ошибка валидации параметров запроса",
+                                              "fieldErrors": {
+                                                "request": "Пароль не должен быть пустым"
+                                              }
+                                            }
+                                            """
+                            ),
+                            @ExampleObject(
+                                    name = "passwordInvalidLength",
+                                    summary = "Некорректная длина пароля",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Ошибка валидации параметров запроса",
+                                              "fieldErrors": {
+                                                "request": "Пароль должен быть от 8 до 128 символов"
+                                              }
+                                            }
+                                            """
+                            )
+                    }
             )
     )
     @interface InvalidPassword {}
@@ -272,14 +295,34 @@ public interface AccountApiDocs {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponseDto.class),
-                    examples = @ExampleObject(value = """
-                            {
-                              "timestamp": "2026-06-20T01:40:14",
-                              "status": 400,
-                              "error": "Bad Request",
-                              "message": "Передана неизвестная роль пользователя: ROLE_ABRACADABRA"
-                            }
-                            """)
+                    examples = {
+                            @ExampleObject(
+                                    name = "emptyRole",
+                                    summary = "На вход передана пустая роль",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Роль не должна быть пустой"
+                                            }
+                                            """
+                            ),
+                            @ExampleObject(
+                                    name = "invalidRole",
+                                    summary = "Неизвестная роль пользователя",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Передана неизвестная роль пользователя: ROLE_ABRACADABRA"
+                                            }
+                                            """
+                            )
+                    }
             )
     )
     @interface InvalidRole {}
