@@ -305,7 +305,10 @@ public interface AccountApiDocs {
                                               "timestamp": "2026-06-20T01:40:14",
                                               "status": 400,
                                               "error": "Bad Request",
-                                              "message": "Роль не должна быть пустой"
+                                              "message": "Ошибка валидации параметров запроса",
+                                              "fieldErrors": {
+                                                "request": "Роль не должна быть пустой"
+                                              }
                                             }
                                             """
                             ),
