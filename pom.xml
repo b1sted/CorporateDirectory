@@ -126,6 +126,11 @@
 
 					<baseClassMappings>
 						<baseClassMapping>
+							<contractPackageRegex>.*accounts\.success.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.accounts.AccountSuccessBase</baseClassFQN>
+						</baseClassMapping>
+
+						<baseClassMapping>
 							<contractPackageRegex>.*employees\.success.*</contractPackageRegex>
 							<baseClassFQN>ru.basted.corporatedirectory.contract.employees.EmployeeSuccessBase</baseClassFQN>
 						</baseClassMapping>
