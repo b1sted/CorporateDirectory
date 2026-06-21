@@ -173,7 +173,8 @@ public interface AccountApiDocs {
                     schema = @Schema(implementation = ErrorResponseDto.class),
                     examples = {
                             @ExampleObject(
-                                    name = "Некорректный пароль или имя пользователя",
+                                    name = "emptyArguments",
+                                    summary = "Переданы пустые аргументы: имя пользователя, пароль и роль",
                                     description = "&nbsp;",
                                     value = """
                                             {
@@ -183,20 +184,39 @@ public interface AccountApiDocs {
                                               "message": "Ошибка валидации данных",
                                               "fieldErrors": {
                                                 "password": "Пароль не должен быть пустым",
-                                                "username": "Имя пользователя должно быть от 4 до 64 символов"
+                                                "role": "Роль не должна быть пустой",
+                                                "username": "Имя пользователя не должно быть пустым"
                                               }
                                             }
                                             """
                             ),
                             @ExampleObject(
-                                    name = "Некорректная роль пользователя",
+                                    name = "invalidPasswordOrUsername",
+                                    summary = "Некорректный пароль или имя пользователя",
                                     description = "&nbsp;",
                                     value = """
                                             {
                                               "timestamp": "2026-06-20T01:40:14",
                                               "status": 400,
                                               "error": "Bad Request",
-                                              "message": "Передана неизвестная роль пользователя: ROLE_"
+                                              "message": "Ошибка валидации данных",
+                                              "fieldErrors": {
+                                                "password": "Пароль должен быть от 8 до 128 символов",
+                                                "username": "Имя пользователя должно быть от 4 до 64 символов"
+                                              }
+                                            }
+                                            """
+                            ),
+                            @ExampleObject(
+                                    name = "invalidRole",
+                                    summary = "Некорректная роль пользователя",
+                                    description = "&nbsp;",
+                                    value = """
+                                            {
+                                              "timestamp": "2026-06-20T01:40:14",
+                                              "status": 400,
+                                              "error": "Bad Request",
+                                              "message": "Передана неизвестная роль пользователя: ROLE_ABRACADABRA"
                                             }
                                             """
                             )
@@ -235,6 +255,34 @@ public interface AccountApiDocs {
             )
     )
     @interface InvalidPassword {}
+
+    @Target({ElementType.METHOD, ElementType.TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @ApiResponse(
+            responseCode = "400",
+            description = "Ошибка валидации поля role",
+            headers = {
+                    @Header(name = "Cache-Control", description = "Запрет кэша",
+                            schema = @Schema(type = "string", example = "no-cache, no-store, max-age=0, must-revalidate")),
+                    @Header(name = "Pragma", description = "Запрет кэша HTTP/1.0",
+                            schema = @Schema(type = "string", example = "no-cache")),
+                    @Header(name = "X-Frame-Options", description = "Защита от кликджекинга",
+                            schema = @Schema(type = "string", example = "DENY"))
+            },
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponseDto.class),
+                    examples = @ExampleObject(value = """
+                            {
+                              "timestamp": "2026-06-20T01:40:14",
+                              "status": 400,
+                              "error": "Bad Request",
+                              "message": "Передана неизвестная роль пользователя: ROLE_ABRACADABRA"
+                            }
+                            """)
+            )
+    )
+    @interface InvalidRole {}
 
     @Target({ElementType.METHOD, ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)

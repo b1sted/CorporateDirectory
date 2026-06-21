@@ -24,7 +24,7 @@ public class AccountCreateDto {
     @Schema(description = "Пароль пользователя", example = "dm89jULndiFNt5zaZL0Ub4tu5IqTDEoH")
     private String password;
 
-    @NotNull(message = "Роль не должна быть пустой")
+    @NotBlank(message = "Роль не должна быть пустой")
     @Schema(description = "Роль пользователя", example = "user")
-    private Role role;
+    private String role;
 }

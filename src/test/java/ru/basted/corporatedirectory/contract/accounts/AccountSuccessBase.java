@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import ru.basted.corporatedirectory.dto.account.AccountCreateDto;
 import ru.basted.corporatedirectory.dto.account.AccountResponseDto;
-import ru.basted.corporatedirectory.model.Role;
 import ru.basted.corporatedirectory.util.AccountsFixtures;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -21,7 +20,7 @@ public abstract class AccountSuccessBase extends AccountContractBase {
         when(accountService.getAccountById(any(Long.class))).thenReturn(validAccount);
         when(accountService.registerNewAccount(any(AccountCreateDto.class))).thenReturn(validAccount);
         doNothing().when(accountService).changePassword(any(Long.class), any(String.class));
-        doNothing().when(accountService).changeRole(any(Long.class), any(Role.class));
+        doNothing().when(accountService).changeRole(any(Long.class), any(String.class));
         doNothing().when(accountService).deleteAccount(any(Long.class));
     }
 }

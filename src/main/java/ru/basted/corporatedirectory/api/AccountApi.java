@@ -88,6 +88,7 @@ public interface AccountApi {
             description = "Изменяет роль действующего пользователя. Доступна только администраторам."
     )
     @AccountApiDocs.ChangeRole
+    @AccountApiDocs.InvalidRole
     @ApiErrors.ResourceNotFound
     @AccountApiDocs.IdenticalRole
     @PatchMapping("/{id}/role")

@@ -68,6 +68,8 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = mapper.toEntity(createDto);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setRole(Role.fromString(createDto.getRole()));
+
         Account savedAccount = repository.save(account);
 
         return mapper.toResponseDto(savedAccount);
@@ -83,15 +85,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void changeRole(Long id, Role role) {
+    public void changeRole(Long id, String role) {
         Account account = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь c ID " + id + " не найден"));
 
-        if (account.getRole().equals(role)) {
-            throw new IdenticalRoleException("Нельзя изменить роль: пользователь уже является " + role);
+        Role newRole = Role.fromString(role);
+        if (account.getRole().equals(newRole)) {
+            throw new IdenticalRoleException("Нельзя изменить роль: пользователь уже является " + newRole);
         }
 
-        account.setRole(role);
+        account.setRole(newRole);
         repository.save(account);
     }
 

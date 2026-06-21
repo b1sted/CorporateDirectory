@@ -14,7 +14,7 @@ public interface AccountService extends UserDetailsService {
     AccountResponseDto registerNewAccount(AccountCreateDto createDto);
 
     void changePassword(Long id, String password);
-    void changeRole(Long id, Role role);
+    void changeRole(Long id, String role);
 
     void deleteAccount(Long id);
 }

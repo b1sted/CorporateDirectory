@@ -53,8 +53,8 @@ public class GlobalExceptionHandler {
         return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponseDto> handleJsonParseError(HttpMessageNotReadableException ex) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDto> handleJsonParseError(IllegalArgumentException ex) {
         String message = ex.getMessage();
         if (message != null && message.contains("ru.basted.corporatedirectory.model.Role")) {
             message = "Передана неизвестная роль пользователя: " + message.substring(message.lastIndexOf('.') + 1);
