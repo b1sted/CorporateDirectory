@@ -1,7 +1,7 @@
 package ru.basted.corporatedirectory.service.impl;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
 import ru.basted.corporatedirectory.exception.UserNotFoundException;
 import ru.basted.corporatedirectory.mapper.EmployeeMapper;

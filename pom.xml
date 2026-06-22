@@ -39,6 +39,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -118,7 +122,24 @@
 				<configuration>
 					<basePackageForTests>ru.basted.corporatedirectory.contract</basePackageForTests>
 
+					<baseClassForTests>ru.basted.corporatedirectory.contract.CoreContractBase</baseClassForTests>
+
 					<baseClassMappings>
+						<baseClassMapping>
+							<contractPackageRegex>.*auth.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.auth.AuthErrorBase</baseClassFQN>
+						</baseClassMapping>
+
+						<baseClassMapping>
+							<contractPackageRegex>.*accounts\.success.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.accounts.AccountSuccessBase</baseClassFQN>
+						</baseClassMapping>
+
+						<baseClassMapping>
+							<contractPackageRegex>.*accounts\.error.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.accounts.AccountErrorBase</baseClassFQN>
+						</baseClassMapping>
+
 						<baseClassMapping>
 							<contractPackageRegex>.*employees\.success.*</contractPackageRegex>
 							<baseClassFQN>ru.basted.corporatedirectory.contract.employees.EmployeeSuccessBase</baseClassFQN>

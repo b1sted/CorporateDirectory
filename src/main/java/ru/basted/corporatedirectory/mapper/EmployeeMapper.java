@@ -1,7 +1,7 @@
 package ru.basted.corporatedirectory.mapper;
 
-import ru.basted.corporatedirectory.dto.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.EmployeeResponseDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 import ru.basted.corporatedirectory.model.Employee;
 
 import org.mapstruct.Mapper;

@@ -1,4 +1,4 @@
-package ru.basted.corporatedirectory.dto;
+package ru.basted.corporatedirectory.dto.employee;
 
 import lombok.Getter;
 import lombok.Setter;
