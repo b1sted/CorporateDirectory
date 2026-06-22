@@ -131,6 +131,11 @@
 						</baseClassMapping>
 
 						<baseClassMapping>
+							<contractPackageRegex>.*accounts\.error.*</contractPackageRegex>
+							<baseClassFQN>ru.basted.corporatedirectory.contract.accounts.AccountErrorBase</baseClassFQN>
+						</baseClassMapping>
+
+						<baseClassMapping>
 							<contractPackageRegex>.*employees\.success.*</contractPackageRegex>
 							<baseClassFQN>ru.basted.corporatedirectory.contract.employees.EmployeeSuccessBase</baseClassFQN>
 						</baseClassMapping>
