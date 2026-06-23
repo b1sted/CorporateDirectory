@@ -133,11 +133,16 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ErrorResponseDto> buildNotFoundResponse(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        if (path.equals("/error")) {
+            path = (String) request.getAttribute("jakarta.servlet.forward.request_uri");
+        }
+
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .timestamp(LocalDateTime.now().withNano(0))
                 .status(HttpStatus.NOT_FOUND.value())
                 .error(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .path(request.getRequestURI())
+                .path(path)
                 .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
