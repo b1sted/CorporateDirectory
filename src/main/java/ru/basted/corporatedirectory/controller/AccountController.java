@@ -1,18 +1,20 @@
 package ru.basted.corporatedirectory.controller;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import ru.basted.corporatedirectory.api.AccountApi;
 import ru.basted.corporatedirectory.dto.account.AccountCreateDto;
 import ru.basted.corporatedirectory.dto.account.AccountResponseDto;
 import ru.basted.corporatedirectory.dto.account.UpdatePasswordRequest;
 import ru.basted.corporatedirectory.dto.account.UpdateRoleRequest;
 import ru.basted.corporatedirectory.service.AccountService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
