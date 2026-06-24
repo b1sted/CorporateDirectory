@@ -1,9 +1,9 @@
 package ru.basted.corporatedirectory.service;
 
+import java.util.List;
+
 import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
 import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
-
-import java.util.List;
 
 public interface EmployeeService {
     List<EmployeeResponseDto> getAllEmployees();

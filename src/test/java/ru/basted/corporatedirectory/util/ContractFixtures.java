@@ -1,9 +1,9 @@
 package ru.basted.corporatedirectory.util;
 
-import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 
 public class ContractFixtures {
     public static EmployeeResponseDto validEmployee(Long id, String fullName, String email,

@@ -1,13 +1,12 @@
 package ru.basted.corporatedirectory.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
-import java.util.Map;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder

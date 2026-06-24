@@ -1,14 +1,11 @@
 package ru.basted.corporatedirectory.dto.account;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-
-import ru.basted.corporatedirectory.model.Role;
 
 @Getter
 @Setter
