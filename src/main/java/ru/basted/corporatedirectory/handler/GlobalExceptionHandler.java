@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return buildBadRequestResponse("Ошибка валидации данных", errors);
+        return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
@@ -44,10 +44,17 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
 
         ex.getParameterValidationResults().forEach(paramResult -> {
-            String paramName = paramResult.getMethodParameter().getParameterName();
+            paramResult.getResolvableErrors().forEach(error -> {
+                String key;
 
-            paramResult.getResolvableErrors().forEach(error ->
-                    errors.put(paramName, error.getDefaultMessage()));
+                if (error instanceof FieldError fieldError) {
+                    key = fieldError.getField();
+                } else {
+                    key = paramResult.getMethodParameter().getParameterName();
+                }
+
+                errors.put(key, error.getDefaultMessage());
+            });
         });
 
         return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
