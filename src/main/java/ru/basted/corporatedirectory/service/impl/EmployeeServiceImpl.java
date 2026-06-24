@@ -1,5 +1,12 @@
 package ru.basted.corporatedirectory.service.impl;
 
+import java.util.List;
+import jakarta.transaction.Transactional;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
+
 import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
 import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
 import ru.basted.corporatedirectory.exception.EmailAlreadyExistsException;
@@ -8,14 +15,6 @@ import ru.basted.corporatedirectory.mapper.EmployeeMapper;
 import ru.basted.corporatedirectory.model.Employee;
 import ru.basted.corporatedirectory.repository.EmployeeRepository;
 import ru.basted.corporatedirectory.service.EmployeeService;
-
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-
-import jakarta.transaction.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,9 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDto createEmployee(EmployeeCreateDto createDto) {
         if (repository.existsByEmail(createDto.getEmail())) {
-            throw new EmailAlreadyExistsException(
-                    "Пользователь с таким адресом электронной почты уже существует в базе данных"
-            );
+            throw new EmailAlreadyExistsException("Адрес электронной почты зарезевирован за другим сотрудником");
         }
 
         Employee employee = mapper.toEntity(createDto);
@@ -60,9 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         String newEmail = createDto.getEmail();
         if (!existingEmployee.getEmail().equals(newEmail) && repository.existsByEmail(newEmail)) {
-            throw new EmailAlreadyExistsException(
-                    "Пользователь с таким адресом электронной почты уже существует в базе данных"
-            );
+            throw new EmailAlreadyExistsException("Адрес электронной почты зарезевирован за другим сотрудником");
         }
 
         mapper.updateEntityFromDto(createDto, existingEmployee);

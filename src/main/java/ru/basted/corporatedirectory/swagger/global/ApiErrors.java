@@ -79,7 +79,7 @@ public interface ApiErrors {
                                               "timestamp": "2026-06-20T01:40:14",
                                               "status": 404,
                                               "error": "Not Found",
-                                              "message": "Пользователь c ID 99 не найден"
+                                              "message": "Ресурс c ID 99 не найден"
                                             }
                                             """
                             )

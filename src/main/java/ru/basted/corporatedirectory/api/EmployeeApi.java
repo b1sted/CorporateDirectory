@@ -1,19 +1,25 @@
 package ru.basted.corporatedirectory.api;
 
+import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import org.springframework.web.bind.annotation.*;
-import ru.basted.corporatedirectory.annotation.*;
-import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
-import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
-
-import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import ru.basted.corporatedirectory.dto.employee.EmployeeCreateDto;
+import ru.basted.corporatedirectory.dto.employee.EmployeeResponseDto;
+import ru.basted.corporatedirectory.swagger.EmployeeApiDocs;
+import ru.basted.corporatedirectory.swagger.global.ApiErrors;
 
 @Tag(name = "Сотрудники", description = "Управление базой данных сотрудников")
 public interface EmployeeApi {
@@ -21,7 +27,8 @@ public interface EmployeeApi {
             summary = "Получить список всех сотрудников",
             description = "Возвращает список всех действующих сотрудников компании с их должностями и контактными данными."
     )
-    @ApiGetEmployeesList
+    @EmployeeApiDocs.GetList
+    @ApiErrors.NotFoundOrHidden
     @GetMapping
     ResponseEntity<List<EmployeeResponseDto>> getAllEmployees();
 
@@ -29,8 +36,8 @@ public interface EmployeeApi {
             summary = "Получить сотрудника по ID",
             description = "Возвращает информацию о действующем сотруднике по его уникальному идентификатору."
     )
-    @ApiGetEmployeeById
-    @ApiUserNotFoundException
+    @EmployeeApiDocs.GetEntity
+    @ApiErrors.ResourceNotFound
     @GetMapping("/{id}")
     ResponseEntity<EmployeeResponseDto> getEmployeeById(
             @Parameter(description = "Уникальный идентификатор сотрудника", required = true, example = "1")
@@ -44,9 +51,9 @@ public interface EmployeeApi {
                     "работников компании. Возвращает информацию созданного сотрудника с присвоенным ему " +
                     "уникальным идентификатором."
     )
-    @ApiCreateEmployee
-    @ApiMethodArgumentNotValid
-    @ApiEmailAlreadyExists
+    @EmployeeApiDocs.Create
+    @ApiErrors.NotFoundOrHidden
+    @EmployeeApiDocs.EmailConflict
     @PostMapping
     ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeCreateDto createDto);
 
@@ -54,10 +61,9 @@ public interface EmployeeApi {
             summary = "Обновление данных сотрудника",
             description = "Полностью заменяет текущие данные сотрудника новыми из тела запроса."
     )
-    @ApiChangeEmployee
-    @ApiValidationError
-    @ApiUserNotFoundException
-    @ApiEmailAlreadyExists
+    @EmployeeApiDocs.Change
+    @ApiErrors.ResourceNotFound
+    @EmployeeApiDocs.EmailConflict
     @PutMapping("/{id}")
     ResponseEntity<EmployeeResponseDto> changeEmployee(
             @Parameter(description = "Уникальный идентификатор сотрудника", required = true, example = "1")
@@ -72,8 +78,8 @@ public interface EmployeeApi {
             summary = "Удаление сотрудника",
             description = "Удаляет из базы данных сотрудника."
     )
-    @ApiRemoveEmployee
-    @ApiUserNotFoundException
+    @EmployeeApiDocs.Delete
+    @ApiErrors.ResourceNotFound
     @DeleteMapping("/{id}")
     ResponseEntity<Void> removeEmployee(
             @Parameter(description = "Уникальный идентификатор сотрудника", required = true, example = "1")
