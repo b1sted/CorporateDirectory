@@ -31,7 +31,7 @@ Contract.make {
                 "error": "Bad Request",
                 "message": "Ошибка валидации параметров запроса",
                 "fieldErrors": [
-                    "request": "Роль не должна быть пустой"
+                    "role": "Роль не должна быть пустой"
                 ]
         ])
     }
