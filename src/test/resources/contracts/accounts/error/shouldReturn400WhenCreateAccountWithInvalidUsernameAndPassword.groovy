@@ -32,7 +32,7 @@ Contract.make {
                 "timestamp": anyDateTime(),
                 "status": 400,
                 "error": "Bad Request",
-                "message": "Ошибка валидации данных",
+                "message": "Ошибка валидации параметров запроса",
                 "fieldErrors": [
                     "password": "Пароль не должен быть пустым",
                     "role": "Роль не должна быть пустой",

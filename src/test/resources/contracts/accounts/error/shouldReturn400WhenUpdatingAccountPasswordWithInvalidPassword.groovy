@@ -31,7 +31,7 @@ Contract.make {
                 "error": "Bad Request",
                 "message": "Ошибка валидации параметров запроса",
                 "fieldErrors": [
-                    "request": "Пароль не должен быть пустым"
+                    "password": "Пароль не должен быть пустым"
                 ]
         ])
     }
