@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public interface EmployeeApi {
     @ApiErrors.NotFoundOrHidden
     @EmployeeApiDocs.EmailConflict
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeCreateDto createDto);
 
     @Operation(
@@ -65,6 +67,7 @@ public interface EmployeeApi {
     @ApiErrors.ResourceNotFound
     @EmployeeApiDocs.EmailConflict
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     ResponseEntity<EmployeeResponseDto> changeEmployee(
             @Parameter(description = "Уникальный идентификатор сотрудника", required = true, example = "1")
             @PathVariable("id")
@@ -81,6 +84,7 @@ public interface EmployeeApi {
     @EmployeeApiDocs.Delete
     @ApiErrors.ResourceNotFound
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     ResponseEntity<Void> removeEmployee(
             @Parameter(description = "Уникальный идентификатор сотрудника", required = true, example = "1")
             @PathVariable("id")
