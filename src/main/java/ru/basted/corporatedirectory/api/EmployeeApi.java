@@ -53,6 +53,7 @@ public interface EmployeeApi {
                     "уникальным идентификатором."
     )
     @EmployeeApiDocs.Create
+    @EmployeeApiDocs.InvalidCreateDto
     @ApiErrors.NotFoundOrHidden
     @EmployeeApiDocs.EmailConflict
     @PostMapping
@@ -64,6 +65,7 @@ public interface EmployeeApi {
             description = "Полностью заменяет текущие данные сотрудника новыми из тела запроса."
     )
     @EmployeeApiDocs.Change
+    @EmployeeApiDocs.InvalidCreateDto
     @ApiErrors.ResourceNotFound
     @EmployeeApiDocs.EmailConflict
     @PutMapping("/{id}")
