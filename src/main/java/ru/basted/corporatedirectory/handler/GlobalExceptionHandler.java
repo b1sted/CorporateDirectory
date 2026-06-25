@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -36,19 +35,26 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return buildBadRequestResponse("Ошибка валидации данных", errors);
+        return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<ErrorResponseDto> handleMethodValidation(HandlerMethodValidationException ex) {
         Map<String, String> errors = new HashMap<>();
 
-        ex.getParameterValidationResults().forEach(paramResult -> {
-            String paramName = paramResult.getMethodParameter().getParameterName();
+        ex.getParameterValidationResults().forEach(paramResult ->
+                paramResult.getResolvableErrors().forEach(error -> {
+                    String key;
 
-            paramResult.getResolvableErrors().forEach(error ->
-                    errors.put(paramName, error.getDefaultMessage()));
-        });
+                    if (error instanceof FieldError fieldError) {
+                        key = fieldError.getField();
+                    } else {
+                        key = paramResult.getMethodParameter().getParameterName();
+                    }
+
+                    errors.put(key, error.getDefaultMessage());
+                })
+        );
 
         return buildBadRequestResponse("Ошибка валидации параметров запроса", errors);
     }
