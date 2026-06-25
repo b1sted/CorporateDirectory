@@ -181,7 +181,7 @@ public interface AccountApiDocs {
                                               "timestamp": "2026-06-20T01:40:14",
                                               "status": 400,
                                               "error": "Bad Request",
-                                              "message": "Ошибка валидации данных",
+                                              "message": "Ошибка валидации параметров запроса",
                                               "fieldErrors": {
                                                 "password": "Пароль не должен быть пустым",
                                                 "role": "Роль не должна быть пустой",
@@ -199,7 +199,7 @@ public interface AccountApiDocs {
                                               "timestamp": "2026-06-20T01:40:14",
                                               "status": 400,
                                               "error": "Bad Request",
-                                              "message": "Ошибка валидации данных",
+                                              "message": "Ошибка валидации параметров запроса",
                                               "fieldErrors": {
                                                 "password": "Пароль должен быть от 8 до 128 символов",
                                                 "username": "Имя пользователя должно быть от 4 до 64 символов"
@@ -253,7 +253,7 @@ public interface AccountApiDocs {
                                               "error": "Bad Request",
                                               "message": "Ошибка валидации параметров запроса",
                                               "fieldErrors": {
-                                                "request": "Пароль не должен быть пустым"
+                                                "password": "Пароль не должен быть пустым"
                                               }
                                             }
                                             """
@@ -269,7 +269,7 @@ public interface AccountApiDocs {
                                               "error": "Bad Request",
                                               "message": "Ошибка валидации параметров запроса",
                                               "fieldErrors": {
-                                                "request": "Пароль должен быть от 8 до 128 символов"
+                                                "password": "Пароль должен быть от 8 до 128 символов"
                                               }
                                             }
                                             """
@@ -307,7 +307,7 @@ public interface AccountApiDocs {
                                               "error": "Bad Request",
                                               "message": "Ошибка валидации параметров запроса",
                                               "fieldErrors": {
-                                                "request": "Роль не должна быть пустой"
+                                                "role": "Роль не должна быть пустой"
                                               }
                                             }
                                             """

@@ -177,7 +177,7 @@ public interface EmployeeApiDocs {
                               "timestamp": "2026-06-20T01:40:14",
                               "status": 400,
                               "error": "Bad Request",
-                              "message": "Ошибка валидации данных",
+                              "message": "Ошибка валидации параметров запроса",
                               "fieldErrors": {
                                 "fullName": "Укажите полное имя сотрудника",
                                 "position": "Укажите должность сотрудника",
