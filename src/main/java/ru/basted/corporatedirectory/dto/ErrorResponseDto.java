@@ -13,7 +13,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Schema(description = "Структура ответа при ошибке")
 public class ErrorResponseDto {
-    @Schema(description = "Время возникновения ошибки", example = "2023-10-25T10:15:46")
+    @Schema(description = "Время возникновения ошибки", example = "2023-10-25T10:15:46Z")
     private LocalDateTime timestamp;
 
     @Schema(description = "HTTP статус", example = "400")
