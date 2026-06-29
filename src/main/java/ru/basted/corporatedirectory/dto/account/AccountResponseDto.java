@@ -20,7 +20,7 @@ public class AccountResponseDto {
     @Schema(description = "Роль, присвоенная учётной записи", example = "ROLE_USER")
     private String role;
 
-    @Schema(description = "Время создания учётной записи", example = "2026-06-20T01:40:14")
+    @Schema(description = "Время создания учётной записи", example = "2026-06-20T01:40:14Zl")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 }
